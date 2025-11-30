@@ -9,16 +9,16 @@
 
   <h2>Video Compressor</h2>
 
-  <input type="file" id="uploader" accept="video/*">
+  <input type="file" id="uploader" accept="video/*"><br><br>
+  <button id="convertBtn" disabled>Convert</button>
 
   <div id="progressBox" class="hidden">
-    <p id="statusText">Processing...</p>
-    <div id="progressBar"><div id="progressFill"></div></div>
+    <div id="progressFill"></div>
   </div>
+  <p id="statusText"></p>
 
-  <a id="downloadLink" class="hidden" download="compressed.mp4">Download Result</a>
+  <a id="downloadLink" style="display:none;">Download Video</a>
 
-  <script src="libs/ffmpeg.min.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
