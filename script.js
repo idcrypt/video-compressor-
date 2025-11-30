@@ -7,19 +7,26 @@ const ffmpeg = createFFmpeg({
 });
 
 const uploader = document.getElementById("uploader");
-const startBtn = document.getElementById("startBtn");
+const convertBtn = document.getElementById("convertBtn");
 const progressBox = document.getElementById("progressBox");
 const progressFill = document.getElementById("progressFill");
 const statusText = document.getElementById("statusText");
 const downloadLink = document.getElementById("downloadLink");
 
-startBtn.onclick = async () => {
-  const file = uploader.files[0];
-  if (!file) {
-    alert("Please select a video file first.");
-    return;
-  }
+let selectedFile = null;
 
+// Enable Convert button only after a file is chosen
+uploader.onchange = () => {
+  selectedFile = uploader.files[0];
+  convertBtn.disabled = !selectedFile;
+  statusText.textContent = "";
+  downloadLink.style.display = "none";
+};
+
+convertBtn.onclick = async () => {
+  if (!selectedFile) return;
+
+  convertBtn.disabled = true;
   progressBox.style.display = "block";
   progressFill.style.width = "0%";
   statusText.textContent = "Loading FFmpeg...";
@@ -28,12 +35,12 @@ startBtn.onclick = async () => {
     await ffmpeg.load();
   }
 
-  statusText.textContent = "Compressing video...";
+  statusText.textContent = "Compressing...";
   ffmpeg.setProgress(({ ratio }) => {
     progressFill.style.width = `${Math.round(ratio * 100)}%`;
   });
 
-  ffmpeg.FS("writeFile", "input.mp4", await fetchFile(file));
+  ffmpeg.FS("writeFile", "input.mp4", await fetchFile(selectedFile));
 
   await ffmpeg.run(
     "-i", "input.mp4",
@@ -51,6 +58,6 @@ startBtn.onclick = async () => {
   downloadLink.href = url;
   downloadLink.download = "compressed.mp4";
   downloadLink.style.display = "inline-block";
-  downloadLink.textContent = "Download Video";
   statusText.textContent = "Completed!";
+  convertBtn.disabled = false; // ready for next conversion
 };
