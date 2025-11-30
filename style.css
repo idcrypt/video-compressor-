@@ -1,0 +1,41 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 30px;
+  background: #fafafa;
+}
+
+input {
+  margin-top: 15px;
+}
+
+#progressBox {
+  margin-top: 25px;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#progressBar {
+  width: 100%;
+  background: #ddd;
+  border-radius: 10px;
+}
+
+#progressFill {
+  width: 0%;
+  height: 18px;
+  background: #2196f3;
+  border-radius: 10px;
+  transition: width .2s;
+}
+
+.hidden {
+  display: none;
+}
+
+a {
+  display: block;
+  margin-top: 25px;
+  font-size: 18px;
+}
