@@ -1,31 +1,32 @@
-const input = document.getElementById("inputVideo");
-const btn = document.getElementById("convertBtn");
-const progress = document.getElementById("progress");
+import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.15/dist/umd/ffmpeg.js";
+
+const btn = document.getElementById("convert");
+const status = document.getElementById("status");
 
 btn.onclick = async () => {
-  if (!input.files.length) return alert("Select a file first");
-  btn.disabled = true;
+    const fileInput = document.getElementById("upload");
+    if (!fileInput.files.length) return alert("Pilih file dulu!");
 
-  const { createFFmpeg, fetchFile } = FFmpeg;
-  const ffmpeg = createFFmpeg({
-    corePath: "libs/ffmpeg-core.js",
-    onProgress: ({ ratio }) => (progress.value = ratio)
-  });
+    const file = fileInput.files[0];
 
-  await ffmpeg.load();
-  const file = input.files[0];
+    status.innerText = "Loading FFmpeg...";
+    const ffmpeg = new FFmpeg();
 
-  ffmpeg.FS("writeFile", "input", await fetchFile(file));
-  await ffmpeg.run("-i", "input", "output.mp4");
+    // wajib karena .wasm dan worker di folder yang sama
+    await ffmpeg.load({
+        coreURL: "https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd/ffmpeg-core.js",
+    });
 
-  const data = ffmpeg.FS("readFile", "output.mp4");
-  const blob = new Blob([data.buffer], { type: "video/mp4" });
-  const url = URL.createObjectURL(blob);
+    status.innerText = "Processing...";
+    await ffmpeg.writeFile("input.webm", await file.arrayBuffer());
+    await ffmpeg.exec(["-i", "input.webm", "output.mp4"]);
+    const data = await ffmpeg.readFile("output.mp4");
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "output.mp4";
-  a.click();
+    const url = URL.createObjectURL(new Blob([data.buffer], { type: "video/mp4" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "converted.mp4";
+    a.click();
 
-  btn.disabled = false;
+    status.innerText = "Done!";
 };
