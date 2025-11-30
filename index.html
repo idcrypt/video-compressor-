@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Video Compressor — 480p</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Video Compressor (480p)</h2>
+
+  <input type="file" id="uploader" accept="video/*">
+
+  <div id="progressBox" class="hidden">
+    <p id="statusText">Processing...</p>
+    <div id="progressBar"><div id="progressFill"></div></div>
+  </div>
+
+  <a id="downloadLink" class="hidden" download="compressed.mp4">Download Result</a>
+
+  <script src="libs/ffmpeg.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
