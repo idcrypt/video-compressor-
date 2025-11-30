@@ -2,23 +2,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Video Compressor</title>
-  <link rel="stylesheet" href="style.css">
+  <title>MP4 Web Converter</title>
+  <script src="libs/ffmpeg.min.js"></script>
+  <style>
+    progress { width: 300px; }
+  </style>
 </head>
 <body>
 
-  <h2>Video Compressor</h2>
+<input type="file" id="inputVideo">
+<button id="convertBtn">Convert to MP4</button>
+<br><br>
+<progress id="progress" value="0" max="1"></progress>
 
-  <input type="file" id="uploader" accept="video/*"><br><br>
-  <button id="convertBtn" disabled>Convert</button>
-
-  <div id="progressBox" class="hidden">
-    <div id="progressFill"></div>
-  </div>
-  <p id="statusText"></p>
-
-  <a id="downloadLink" style="display:none;">Download Video</a>
-
-  <script type="module" src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
